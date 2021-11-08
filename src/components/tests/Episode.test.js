@@ -2,9 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Episode from './../Episode';
 
-test("renders without error", () => {
-    render(<Episode season={[]}/>)
-    });
     
 
     const testEpisode = {
@@ -13,7 +10,7 @@ test("renders without error", () => {
     image: "http://static.tvmaze.com/uploads/images/medium_landscape/67/168918.jpg",
     season: 1,
     number: 1,
-    summary: "hello",
+    summary: "test",
     runtime: 1
 }
 
@@ -24,35 +21,28 @@ const testEpisodeWithoutImage = {
     image: null,
     season: 1,
     number: 1,
-    summary: "",
+    summary: "test",
     runtime: 1
 }
 
+test("renders without error", () => {
+    render(<Episode episode={testEpisode}/>)
+    });
 
 test("renders the summury test passed as prop", ()=>{
-   const {rerender} = render(<Episode episodeSummary={[]} />)
-   let episodeSummary = screen.queryAllByTestId('hello');
-   expect(episodeSummary).toHaveLength(0);
-   rerender(<Episode episodeSummary={testEpisode}/>)
-   episodeSummary = screen.queryAllByTestId('hello');
-   expect(episodeSummary).toHaveLength(1)
-   expect(testEpisode).toHaveBeenCalled();
-
- 
-
+render(<Episode episode={testEpisode}/>)
+const summary = screen.queryByText(/test summary/i)
+expect(summary).toBeInTheDocument();
+expect(summary).toBeTruthy();
+expect(summary).toHaveTextContent("test summary");
 
 });
 
 test("renders default image when image is not defined", ()=>{
-    const strangerPic = [
-        './stranger_things.png'
-    ]
-    const { getAllByTestId, rerender } = render(<Episode image={[]} />);
-    expect(getAllByTestId(/strainger pic/i)).toHaveLength(0);
-    rerender(<testEpisodeWithoutImage  image={strangerPic}/>)
-    expect(getAllByTestId(/stranger pic/i)).toHaveLength(1);
-})
-
+    render(<Episode episode={testEpisodeWithoutImage}/>)
+    const image = screen.queryByText('./stranger_things.png');
+    expect(image).toBeInTheDocument();
+}
 //Tasks
 //1. Complete a test that shows the Episode component renders. Pass in the provided example episode data as a test prop.
 //2. Modify the test data to display a specific summary statement. Complete a test that shows that the summary value passed in to the Episode component displays as expected. Use no more then 3 different expect statements to test the the existance of the summary value.
