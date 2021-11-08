@@ -4,11 +4,27 @@ import userEvent from '@testing-library/user-event';
 
 import Show from './../Show';
 
-const testShow = {
-    //add in approprate test data structure here.
-}
+const testShow = [
+    {
+        show_id: 1,
+        show_name: "stranger things",
+        show_summary: "",
+        seasons:[],
+        }
+]
 
 test('renders testShow and no selected Season without errors', ()=>{
+    const { rerender } = render(<Show seasons={[]}/>);
+
+    let seasons = screen.queryAllByTestId('stranger things');
+
+    expect(seasons).toHaveLength(0);
+
+    rerender(<Show missions={testShow}/>);
+
+    seasons = screen.queryAllByTestId('stranger things');
+
+    expect(seasons).toHaveLength(3);
 });
 
 test('renders Loading component when prop show is null', () => {

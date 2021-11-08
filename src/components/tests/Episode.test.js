@@ -13,7 +13,7 @@ test("renders without error", () => {
     image: "http://static.tvmaze.com/uploads/images/medium_landscape/67/168918.jpg",
     season: 1,
     number: 1,
-    summary: "",
+    summary: "hello",
     runtime: 1
 }
 
@@ -21,6 +21,7 @@ const testEpisodeWithoutImage = {
     //Add in approprate test data structure here.
     id:1,
     name: "",
+    image: null,
     season: 1,
     number: 1,
     summary: "",
@@ -29,19 +30,27 @@ const testEpisodeWithoutImage = {
 
 
 test("renders the summury test passed as prop", ()=>{
-   const {rerender} = render(<Episode summary={[]} />)
+   const {rerender} = render(<Episode episodeSummary={[]} />)
+   let episodeSummary = screen.queryAllByTestId('hello');
+   expect(episodeSummary).toHaveLength(0);
+   rerender(<Episode episodeSummary={testEpisode}/>)
+   episodeSummary = screen.queryAllByTestId('hello');
+   expect(episodeSummary).toHaveLength(1)
+   expect(testEpisode).toHaveBeenCalled();
 
-    let summary = screen.queryAllByTestId("");
-    expect(summary).toHaveLength(0);
-    rerender(<Episode summary={testEpisode}/>)
-    summary = screen.queryAllByTestId('summary');
-    expect(summary).toHaveLength(1)
+ 
 
 
 });
 
 test("renders default image when image is not defined", ()=>{
-    
+    const strangerPic = [
+        './stranger_things.png'
+    ]
+    const { getAllByTestId, rerender } = render(<Episode image={[]} />);
+    expect(getAllByTestId(/strainger pic/i)).toHaveLength(0);
+    rerender(<testEpisodeWithoutImage  image={strangerPic}/>)
+    expect(getAllByTestId(/stranger pic/i)).toHaveLength(1);
 })
 
 //Tasks
