@@ -2,7 +2,12 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Episode from './../Episode';
 
-const testEpisode = {
+test("renders without error", () => {
+    render(<Episode season={[]}/>)
+    });
+    
+
+    const testEpisode = {
     id:1,
     name: "",
     image: "http://static.tvmaze.com/uploads/images/medium_landscape/67/168918.jpg",
@@ -14,14 +19,25 @@ const testEpisode = {
 
 const testEpisodeWithoutImage = {
     //Add in approprate test data structure here.
+    id:1,
+    name: "",
+    season: 1,
+    number: 1,
+    summary: "",
+    runtime: 1
 }
 
-test("renders without error", () => {
-
-});
 
 test("renders the summury test passed as prop", ()=>{
-    
+   const {rerender} = render(<Episode summary={[]} />)
+
+    let summary = screen.queryAllByTestId("");
+    expect(summary).toHaveLength(0);
+    rerender(<Episode summary={testEpisode}/>)
+    summary = screen.queryAllByTestId('summary');
+    expect(summary).toHaveLength(1)
+
+
 });
 
 test("renders default image when image is not defined", ()=>{
